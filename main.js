@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-import { loadObjects, moveObject } from './objects.js';
+import { loadGrass, loadObjects, moveObject } from './objects.js';
 import { resize } from './camera.js';
 import { InteractionManager } from 'three.interactive';
 
@@ -88,7 +88,9 @@ const keys = {
   Up: false,
   Down: false,
   Left: false,
-  Right: false
+  Right: false,
+  Shift: false,
+  Space: false
 };
 
 window.addEventListener('keydown', (event) => {
@@ -105,6 +107,7 @@ function updateKeys(event, isPressed) {
       keys[key] = isPressed;
     }
   };
+
   if (event.key === 'ArrowUp') {
     toggleKey('Up');
     toggleKey('w');
@@ -117,9 +120,7 @@ function updateKeys(event, isPressed) {
   } else if (event.key === 'ArrowRight') {
     toggleKey('Right');
     toggleKey('d');
-  }
-
-  else if (event.key === 'w') {
+  } else if (event.key === 'w') {
     toggleKey('Up');
     toggleKey('w');
   } else if (event.key === 's') {
@@ -131,10 +132,15 @@ function updateKeys(event, isPressed) {
   } else if (event.key === 'd') {
     toggleKey('Right');
     toggleKey('d');
+  } else if (event.key === ' ') {
+    toggleKey('Space');
+  } else if (event.key === 'Shift') {
+    toggleKey('Shift');
   }
 }
 
 
+loadGrass(scene);
 
 
 
@@ -150,7 +156,6 @@ async function init() {
       interactionManager.update();
     }
     moveObject(objects, keys);
-    console.log(objects.fountain)
   }
   animate();
 }
