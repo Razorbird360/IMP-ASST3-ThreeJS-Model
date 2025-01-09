@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "3D Website showcase of physical landscape model with customizability for remote workers who benefit from the use of 3d displays for visualisation",
   "main": "main.js",
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "serve": "vite preview"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "vite": "^6.0.6"
   },
   "dependencies": {
-    "three": "^0.172.0"
+    "three": "^0.172.0",
+    "three.interactive": "^1.8.0"
   }
 }
