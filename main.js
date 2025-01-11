@@ -80,7 +80,7 @@ window.addEventListener('keydown', (event) => {
 });
 
 window.addEventListener('keyup', (event) => {
-  if (event.key === 'l') {
+  if (event.key.toLowerCase() === 'l') {
     return;
   }
   updateKeys(event, false);
@@ -93,35 +93,36 @@ function updateKeys(event, isPressed) {
     }
   };
 
-  if (event.key === 'ArrowUp') {
+  
+  if (event.key.toLowerCase() === 'ArrowUp') {
     toggleKey('Up');
     toggleKey('w');
-  } else if (event.key === 'ArrowDown') {
+  } else if (event.key.toLowerCase() === 'ArrowDown') {
     toggleKey('Down');
     toggleKey('s');
-  } else if (event.key === 'ArrowLeft') {
+  } else if (event.key.toLowerCase() === 'ArrowLeft') {
     toggleKey('Left');
     toggleKey('a');
-  } else if (event.key === 'ArrowRight') {
+  } else if (event.key.toLowerCase() === 'ArrowRight') {
     toggleKey('Right');
     toggleKey('d');
-  } else if (event.key === 'w') {
+  } else if (event.key.toLowerCase() === 'w') {
     toggleKey('Up');
     toggleKey('w');
-  } else if (event.key === 's') {
+  } else if (event.key.toLowerCase() === 's') {
     toggleKey('Down');
     toggleKey('s');
-  } else if (event.key === 'a') {
+  } else if (event.key.toLowerCase() === 'a') {
     toggleKey('Left');
     toggleKey('a');
-  } else if (event.key === 'd') {
+  } else if (event.key.toLowerCase() === 'd') {
     toggleKey('Right');
     toggleKey('d');
-  } else if (event.key === ' ') {
+  } else if (event.key.toLowerCase() === ' ') {
     toggleKey('Space');
-  } else if (event.key === 'Shift') {
+  } else if (event.key.toLowerCase() === 'Shift') {
     toggleKey('Shift');
-  } else if (event.key === 'l') {
+  } else if (event.key.toLowerCase() === 'l') {
     if (keys.l === 1) {
       keys.l = 2;
     } else if (keys.l === 2) {
@@ -129,6 +130,12 @@ function updateKeys(event, isPressed) {
     } else if (keys.l === 3) {
       keys.l = 4;
     } else if (keys.l === 4) {
+      keys.l = 5;
+    } else if (keys.l === 5) {
+      keys.l = 6;
+    } else if (keys.l === 6) {
+      keys.l = 7;
+    } else if (keys.l === 7) {
       keys.l = 1;
     }
   }

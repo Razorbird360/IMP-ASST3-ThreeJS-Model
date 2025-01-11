@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { add, js } from 'three/tsl';
+import { BASE_PATH } from './utils.js';
 
 const gltfLoader = new GLTFLoader();
 const fbxLoader = new FBXLoader();
@@ -98,32 +98,15 @@ export async function loadObjects(scene, objects, interactionManager) {
 
 
     loadLamps(scene, interactionManager, objects);
-    // const lampPost = await loadGLBModel('lampPost.glb');
-    // castShadow(lampPost);
-    // lampPost.position.set(-10, 0, -10);
-    // lampPost.scale.set(0.006, 0.006, 0.006);
-    // scene.add(lampPost);
-    // lampPost.interactive = true;
-    // interactionManager.add(lampPost);
-    // objects['lampPost'] = { object: lampPost, clicked: false };
-    // addInteraction(lampPost, 'lampPost', objects);
 
-    // const ballGeo = new THREE.SphereGeometry(0.5, 32, 32);
-    // const ballMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-    // const ball = new THREE.Mesh(ballGeo, ballMat);
-    // ball.scale.set(0.5, 0.5, 0.5);
-    // ball.position.set(-10, 5.2, -10);
-    // scene.add(ball);
-
-
-
+    
     return objects;
 }
 
 function loadGLBModel(fileName) {
     return new Promise((resolve, reject) => {
         gltfLoader.load(
-            `/models/${fileName}`,
+            `${BASE_PATH}models/${fileName}`,
             (gltf) => {
                 const model = gltf.scene || gltf;
                 resolve(model);
@@ -137,7 +120,7 @@ function loadGLBModel(fileName) {
 function loadFBXModel(fileName) {
     return new Promise((resolve, reject) => {
         fbxLoader.load(
-            `/models/${fileName}`,
+            `${BASE_PATH}models/${fileName}`,
             (object) => {
                 const model = object.scene || object;
                 resolve(model);
@@ -151,7 +134,7 @@ function loadFBXModel(fileName) {
 function loadOBJModel(fileName) {
     return new Promise((resolve, reject) => {
         mtlloader.load(
-            `/models/${fileName}.mtl`,
+            `${BASE_PATH}models/${fileName}.mtl`,
             (materials) => {
                 materials.preload();
                 objloader.setMaterials(materials);
@@ -185,7 +168,6 @@ export function moveObject(objects, keys) {
     for (const key in objects) {
         const obj = objects[key];
         if (obj.clicked && obj.object instanceof THREE.Object3D) {
-            // Horizontal and vertical movements
             if (keys.Up) {
                 obj.object.position.z -= moveDistance;
             }
@@ -212,7 +194,7 @@ export function moveObject(objects, keys) {
 
 export async function loadGrass(scene) {
     const gltf = await gltfLoader.loadAsync(
-    `/models/grass.glb`
+    `${BASE_PATH}models/grass.glb`
     );
     const grassModel = gltf.scene;
     grassModel.scale.set(0.02, 0.02, 0.02);
@@ -286,13 +268,13 @@ export function updateLightPosition(objects) {
 
 async function loadTrees(scene, interactionManager, objects) {
     const st = await gltfLoader.loadAsync(
-        `/models/trees/smallTree.glb`
+        `${BASE_PATH}models/trees/smallTree.glb`
     );
     const mt = await gltfLoader.loadAsync(
-        `/models/trees/mediumTree.glb`
+        `${BASE_PATH}models/trees/mediumTree.glb`
     );
     const bt = await gltfLoader.loadAsync(
-        `/models/trees/bigTree.glb`
+        `${BASE_PATH}models/trees/bigTree.glb`
     );
 
 
@@ -428,7 +410,6 @@ async function loadTrees(scene, interactionManager, objects) {
     interactionManager.add(tree19);
     objects['tree19'] = { object: tree19, clicked: false };
     addInteraction(tree19, 'tree19', objects);
-    
     
 }
 

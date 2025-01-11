@@ -8,17 +8,29 @@ export function updateLights(scene, lights, keys) {
         lights.ambientLight.intensity = 1;
     }
     else if (keys.l === 2) {
-        lights.directionalLight.position.set(0, 100, 0);
+        lights.directionalLight.position.set(-100, 100, 60);
         lights.directionalLight.intensity = 2;
 
     }
     else if (keys.l === 3) {
-        lights.directionalLight.position.set(-100, 100, -60);
+        lights.directionalLight.position.set(0, 100, 0);
         lights.directionalLight.intensity = 2;
     }
     else if (keys.l === 4) {
-        lights.directionalLight.intensity = 0;
+        lights.directionalLight.position.set(-60, 100, -100);
+        lights.directionalLight.intensity = 2;
+    }
+    else if (keys.l === 5) {
+        lights.directionalLight.position.set(60, 100, -100);
+        lights.directionalLight.intensity = 2;
+    }
+    else if (keys.l === 6) {
+        lights.directionalLight.intensity = 0.15;
         lights.ambientLight.intensity = 0.08;
+    }
+    else if (keys.l === 7) {
+        lights.directionalLight.intensity = 0;
+        lights.ambientLight.intensity = 0.05;
     }
 
 }
