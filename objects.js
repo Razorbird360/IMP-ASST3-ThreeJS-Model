@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { add, js } from 'three/tsl';
 
 const gltfLoader = new GLTFLoader();
 const fbxLoader = new FBXLoader();
@@ -43,13 +44,86 @@ export async function loadObjects(scene, objects, interactionManager) {
 
     loadTrees(scene, interactionManager, objects);
 
+    const slide = await loadGLBModel('playground/slide.glb');
+    castShadow(slide);
+    slide.position.set(10, 0, 0);
+    scene.add(slide);
+    slide.interactive = true;
+    interactionManager.add(slide);
+    objects['slide'] = { object: slide, clicked: false };
+    addInteraction(slide, 'slide', objects);
+    
+    const monkeyBars = await loadGLBModel('playground/monkeyBars.glb');
+    castShadow(monkeyBars);
+    monkeyBars.position.set(15, 0, 0);
+    monkeyBars.rotation.y = Math.PI / 2;
+    monkeyBars.scale.set(2, 2, 2);
+    scene.add(monkeyBars);
+    monkeyBars.interactive = true;
+    interactionManager.add(monkeyBars);
+    objects['monkeyBars'] = { object: monkeyBars, clicked: false };
+    addInteraction(monkeyBars, 'monkeyBars', objects);
+
+    const sandbox = await loadGLBModel('playground/sandbox.glb');
+    castShadow(sandbox);
+    sandbox.position.set(10, 0, -10);
+    sandbox.scale.set(2.5, 2.5, 2.5);
+    scene.add(sandbox);
+    sandbox.interactive = true;
+    interactionManager.add(sandbox);
+    objects['sandbox'] = { object: sandbox, clicked: false };
+    addInteraction(sandbox, 'sandbox', objects);
+    
+    const seesaw = await loadGLBModel('playground/seesaw.glb');
+    castShadow(seesaw);
+    seesaw.position.set(15, 0, -10);
+    seesaw.rotation.y = Math.PI / 2;
+    seesaw.scale.set(0.7, 0.7, 0.7);
+    scene.add(seesaw);
+    seesaw.interactive = true;
+    interactionManager.add(seesaw);
+    objects['seesaw'] = { object: seesaw, clicked: false };
+    addInteraction(seesaw, 'seesaw', objects);
+
+
+    const picnicTable = await loadGLBModel('picnicTable.glb');
+    castShadow(picnicTable);
+    picnicTable.position.set(-10, 0, 0);
+    picnicTable.scale.set(1.1, 1.1, 1.1);
+    scene.add(picnicTable);
+    picnicTable.interactive = true;
+    interactionManager.add(picnicTable);
+    objects['picnicTable'] = { object: picnicTable, clicked: false };
+    addInteraction(picnicTable, 'picnicTable', objects);
+
+
+    loadLamps(scene, interactionManager, objects);
+    // const lampPost = await loadGLBModel('lampPost.glb');
+    // castShadow(lampPost);
+    // lampPost.position.set(-10, 0, -10);
+    // lampPost.scale.set(0.006, 0.006, 0.006);
+    // scene.add(lampPost);
+    // lampPost.interactive = true;
+    // interactionManager.add(lampPost);
+    // objects['lampPost'] = { object: lampPost, clicked: false };
+    // addInteraction(lampPost, 'lampPost', objects);
+
+    // const ballGeo = new THREE.SphereGeometry(0.5, 32, 32);
+    // const ballMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    // const ball = new THREE.Mesh(ballGeo, ballMat);
+    // ball.scale.set(0.5, 0.5, 0.5);
+    // ball.position.set(-10, 5.2, -10);
+    // scene.add(ball);
+
+
+
     return objects;
 }
 
 function loadGLBModel(fileName) {
     return new Promise((resolve, reject) => {
         gltfLoader.load(
-            `public/models/${fileName}`,
+            `/models/${fileName}`,
             (gltf) => {
                 const model = gltf.scene || gltf;
                 resolve(model);
@@ -63,7 +137,7 @@ function loadGLBModel(fileName) {
 function loadFBXModel(fileName) {
     return new Promise((resolve, reject) => {
         fbxLoader.load(
-            `public/models/${fileName}`,
+            `/models/${fileName}`,
             (object) => {
                 const model = object.scene || object;
                 resolve(model);
@@ -77,12 +151,12 @@ function loadFBXModel(fileName) {
 function loadOBJModel(fileName) {
     return new Promise((resolve, reject) => {
         mtlloader.load(
-            `public/models/${fileName}.mtl`,
+            `/models/${fileName}.mtl`,
             (materials) => {
                 materials.preload();
                 objloader.setMaterials(materials);
                 objloader.load(
-                    `public/models/${fileName}.obj`,
+                    `/models/${fileName}.obj`,
                     (object) => {
                         resolve(object);
                     },
@@ -111,6 +185,7 @@ export function moveObject(objects, keys) {
     for (const key in objects) {
         const obj = objects[key];
         if (obj.clicked && obj.object instanceof THREE.Object3D) {
+            // Horizontal and vertical movements
             if (keys.Up) {
                 obj.object.position.z -= moveDistance;
             }
@@ -124,6 +199,7 @@ export function moveObject(objects, keys) {
                 obj.object.position.x += moveDistance;
             }
 
+            // Vertical movements
             if (keys.Space) {
                 obj.object.position.y += moveDistance;
             }
@@ -136,7 +212,7 @@ export function moveObject(objects, keys) {
 
 export async function loadGrass(scene) {
     const gltf = await gltfLoader.loadAsync(
-    `public/models/grass.glb`
+    `/models/grass.glb`
     );
     const grassModel = gltf.scene;
     grassModel.scale.set(0.02, 0.02, 0.02);
@@ -152,16 +228,71 @@ export async function loadGrass(scene) {
     scene.add(clone);
     }
 }
-  
-export async function loadTrees(scene, interactionManager, objects) {
+
+async function loadLamps(scene, interactionManager, objects) {
+    const lampPost = await loadGLBModel('lampPost.glb');
+    castShadow(lampPost);
+    lampPost.position.set(-10, 0, -10);
+    lampPost.scale.set(0.006, 0.006, 0.006);
+    scene.add(lampPost);
+
+    const light1 = addLight(-10, 0, -10);
+    scene.add(light1);
+
+    lampPost.interactive = true;
+    interactionManager.add(lampPost);
+    objects['lampPost'] = { object: lampPost, light: light1, clicked: false };
+    addInteraction(lampPost, 'lampPost', objects);
+
+    const lampPost2 = await loadGLBModel('lampPost.glb');
+    castShadow(lampPost2);
+    lampPost2.position.set(15, 0, 10);
+    lampPost2.scale.set(0.006, 0.006, 0.006);
+    scene.add(lampPost2);
+
+    const light2 = addLight(15, 0, 10);
+    scene.add(light2);
+
+    lampPost2.interactive = true;
+    interactionManager.add(lampPost2);
+    objects['lampPost2'] = { object: lampPost2, light: light2, clicked: false };
+    addInteraction(lampPost2, 'lampPost2', objects);
+}
+
+
+function addLight(x, y, z) {
+    const pointlight = new THREE.PointLight(0xffffff, 55, 100);
+    pointlight.position.set(x, y, z);
+    castShadow(pointlight);
+    return pointlight;
+}
+
+export function updateLightPosition(objects) {
+    for (const key in objects) {
+        const lampData = objects[key];
+        if (lampData.object && lampData.light) {
+            const lampPost = lampData.object;
+            const light = lampData.light;
+
+            light.position.set(
+                lampPost.position.x,
+                lampPost.position.y + 5.2,
+                lampPost.position.z
+            );
+        }
+    }
+}
+
+
+async function loadTrees(scene, interactionManager, objects) {
     const st = await gltfLoader.loadAsync(
-        `public/models/smallTree.glb`
+        `/models/trees/smallTree.glb`
     );
     const mt = await gltfLoader.loadAsync(
-        `public/models/mediumTree.glb`
+        `/models/trees/mediumTree.glb`
     );
     const bt = await gltfLoader.loadAsync(
-        `public/models/bigTree.glb`
+        `/models/trees/bigTree.glb`
     );
 
 
@@ -172,7 +303,7 @@ export async function loadTrees(scene, interactionManager, objects) {
     objects['tree1'] = { object: tree1, clicked: false };
     addInteraction(tree1, 'tree1', objects);
     
-    let tree2 = createTree(-19, 0, -19, 'm', scene, st, mt, bt);
+    let tree2 = createTree(-7, 0, -7, 'm', scene, st, mt, bt);
     scene.add(tree2);
     tree2.interactive = true;
     interactionManager.add(tree2);
@@ -186,14 +317,14 @@ export async function loadTrees(scene, interactionManager, objects) {
     objects['tree3'] = { object: tree3, clicked: false };
     addInteraction(tree3, 'tree3', objects);
     
-    let tree4 = createTree(16, 0, -10, 's', scene, st, mt, bt);
+    let tree4 = createTree(6, 0, -10, 's', scene, st, mt, bt);
     scene.add(tree4);
     tree4.interactive = true;
     interactionManager.add(tree4);
     objects['tree4'] = { object: tree4, clicked: false };
     addInteraction(tree4, 'tree4', objects);
     
-    let tree5 = createTree(19, 0, 10, 'l', scene, st, mt, bt);
+    let tree5 = createTree(9, 0, 10, 'l', scene, st, mt, bt);
     scene.add(tree5);
     tree5.interactive = true;
     interactionManager.add(tree5);
@@ -319,3 +450,4 @@ function createTree(x, y, z, size, scene, st, mt, bt) {
     castShadow(tree);
     return tree;
 }
+

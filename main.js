@@ -2,9 +2,10 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-import { loadGrass, loadObjects, moveObject } from './objects.js';
+import { loadGrass, loadObjects, moveObject, updateLightPosition } from './objects.js';
 import { resize } from './camera.js';
 import { InteractionManager } from 'three.interactive';
+import { updateLights, createLights } from './lights.js';
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x808080);
@@ -20,7 +21,7 @@ camera.position.set(0, 6, 7);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const axesHelper = new THREE.AxesHelper(5);
+const axesHelper = new THREE.AxesHelper(7);
 scene.add(axesHelper);
 
 window.addEventListener('resize', () => resize(renderer, camera));
@@ -57,27 +58,7 @@ scene.add(ground);
 // Rotate ground to be flat
 ground.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-directionalLight.position.set(100, 100, 70);
-directionalLight.target.position.set(0, 0, 0);
-directionalLight.castShadow = true;
-
-directionalLight.shadow.mapSize.width = 1024; 
-directionalLight.shadow.mapSize.height = 1024;
-directionalLight.shadow.camera.near = 0.1; 
-directionalLight.shadow.camera.far = 200;
-directionalLight.shadow.camera.left = -50; 
-directionalLight.shadow.camera.right = 50;
-directionalLight.shadow.camera.top = 50;
-directionalLight.shadow.camera.bottom = -50;
-
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-scene.add(directionalLight);
+const lights = createLights(scene, renderer);
 
 
 
@@ -90,15 +71,19 @@ const keys = {
   Left: false,
   Right: false,
   Shift: false,
-  Space: false
+  Space: false,
+  l: 1
 };
 
 window.addEventListener('keydown', (event) => {
-    updateKeys(event, true);
+  updateKeys(event, true);
 });
 
 window.addEventListener('keyup', (event) => {
-    updateKeys(event, false);
+  if (event.key === 'l') {
+    return;
+  }
+  updateKeys(event, false);
 });
 
 function updateKeys(event, isPressed) {
@@ -136,8 +121,19 @@ function updateKeys(event, isPressed) {
     toggleKey('Space');
   } else if (event.key === 'Shift') {
     toggleKey('Shift');
+  } else if (event.key === 'l') {
+    if (keys.l === 1) {
+      keys.l = 2;
+    } else if (keys.l === 2) {
+      keys.l = 3;
+    } else if (keys.l === 3) {
+      keys.l = 4;
+    } else if (keys.l === 4) {
+      keys.l = 1;
+    }
   }
 }
+
 
 
 loadGrass(scene);
@@ -156,7 +152,20 @@ async function init() {
       interactionManager.update();
     }
     moveObject(objects, keys);
+    updateLightPosition(objects);
+    
+    console.log(keys.l);
+
+    updateLights(scene, lights, keys);
   }
   animate();
 }
 init();
+
+
+
+
+
+
+
+
