@@ -150,6 +150,29 @@ function updateKeys(event, isPressed) {
 loadGrass(scene);
 
 
+function updateSelected(objects) {
+  const container = document.querySelector('.selection');
+  for (const key in objects) {
+    if (objects.hasOwnProperty(key)) {
+        if (objects[key].hasOwnProperty('clicked') && objects[key].clicked === true) {
+            const existingElement = Array.from(container.children).find(p => p.textContent === key);
+            if (existingElement) {
+                continue;
+            }
+            const p = document.createElement('p');
+            p.textContent = key;
+            container.appendChild(p);
+        }
+        else {
+          const existingElement = Array.from(container.children).find(p => p.textContent === key);
+          if (existingElement) {
+              container.removeChild(existingElement);
+          }
+        }
+    }
+  }
+}
+
 
 const interactionManager = new InteractionManager(renderer, camera, renderer.domElement);
 async function init() {
@@ -166,6 +189,7 @@ async function init() {
     updateLightPosition(objects);
     
     updateLights(scene, lights, keys);
+    updateSelected(objects);
     // console.log(objects);
     // console.log(keys.n);
   }
