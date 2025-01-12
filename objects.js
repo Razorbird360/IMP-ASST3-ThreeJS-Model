@@ -34,7 +34,7 @@ export async function loadObjects(scene, objects, interactionManager) {
 
     const fountain = await loadGLBModel('fountain.glb');
     castShadow(fountain);
-    fountain.position.set(-1.7, 0, 0.35);
+    fountain.position.set(0, 0, 0);
     fountain.scale.set(0.01, 0.01, 0.01);
     scene.add(fountain);
     fountain.interactive = true;
@@ -199,6 +199,12 @@ export function moveObject(objects, keys) {
             if (keys.n) {
                 resetY(objects);
                 keys.n = false;
+            }
+            if (keys.q) {
+                obj.object.rotation.y += 0.04;
+            }
+            if (keys.e) {
+                obj.object.rotation.y -= 0.04;
             }
         }
     }

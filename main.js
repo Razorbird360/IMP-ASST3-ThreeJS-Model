@@ -75,6 +75,8 @@ const keys = {
   l: 1,
   r: false,
   n: false,
+  q: false,
+  e: false,
 };
 
 window.addEventListener('keydown', (event) => {
@@ -96,30 +98,26 @@ function updateKeys(event, isPressed) {
   };
 
   
-  if (event.key.toLowerCase() === 'ArrowUp') {
+  if (event.key === 'ArrowUp') {
     toggleKey('Up');
-    toggleKey('w');
-  } else if (event.key.toLowerCase() === 'ArrowDown') {
+  } else if (event.key === 'ArrowDown') {
     toggleKey('Down');
-    toggleKey('s');
-  } else if (event.key.toLowerCase() === 'ArrowLeft') {
+  } else if (event.key === 'ArrowLeft') {
     toggleKey('Left');
-    toggleKey('a');
-  } else if (event.key.toLowerCase() === 'ArrowRight') {
+  } else if (event.key === 'ArrowRight') {
     toggleKey('Right');
-    toggleKey('d');
   } else if (event.key.toLowerCase() === 'w') {
     toggleKey('Up');
-    toggleKey('w');
   } else if (event.key.toLowerCase() === 's') {
     toggleKey('Down');
-    toggleKey('s');
   } else if (event.key.toLowerCase() === 'a') {
     toggleKey('Left');
-    toggleKey('a');
   } else if (event.key.toLowerCase() === 'd') {
     toggleKey('Right');
-    toggleKey('d');
+  } else if (event.key.toLowerCase() === 'q') {
+    toggleKey('q');
+  } else if (event.key.toLowerCase() === 'e') {
+    toggleKey('e');
   } else if (event.key.toLowerCase() === ' ') {
     toggleKey('Space');
   } else if (event.key === 'Shift') {
