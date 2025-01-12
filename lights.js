@@ -6,6 +6,7 @@ export function updateLights(scene, lights, keys) {
         lights.directionalLight.position.set(100, 100, 60);
         lights.directionalLight.intensity = 2;
         lights.ambientLight.intensity = 1;
+        scene.background = new THREE.Color(0xFFD580);
     }
     else if (keys.l === 2) {
         lights.directionalLight.position.set(-100, 100, 60);
@@ -15,10 +16,12 @@ export function updateLights(scene, lights, keys) {
     else if (keys.l === 3) {
         lights.directionalLight.position.set(0, 100, 0);
         lights.directionalLight.intensity = 2;
+        scene.background = new THREE.Color(0xFFE4A1);
     }
     else if (keys.l === 4) {
         lights.directionalLight.position.set(-60, 100, -100);
         lights.directionalLight.intensity = 2;
+        scene.background = new THREE.Color(0xFFD580);
     }
     else if (keys.l === 5) {
         lights.directionalLight.position.set(60, 100, -100);
@@ -27,12 +30,13 @@ export function updateLights(scene, lights, keys) {
     else if (keys.l === 6) {
         lights.directionalLight.intensity = 0.15;
         lights.ambientLight.intensity = 0.08;
+        scene.background = new THREE.Color(0x012e04);
     }
     else if (keys.l === 7) {
         lights.directionalLight.intensity = 0;
         lights.ambientLight.intensity = 0.05;
+        scene.background = new THREE.Color(0x000000);
     }
-
 }
 
 export function createLights(scene, renderer) {

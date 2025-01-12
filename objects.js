@@ -26,7 +26,7 @@ function addInteraction(object, key, objects) {
         });
     } 
     else {
-        console.error(`The object for ${key} is not a valid THREE.Object3D.`);
+        console.log(`The object for ${key} is not a valid THREE.Object3D.`);
     }
 }
 
@@ -99,10 +99,11 @@ export async function loadObjects(scene, objects, interactionManager) {
 
     loadLamps(scene, interactionManager, objects);
 
-    
+    addRoad(scene, interactionManager, objects);
+
     return objects;
 }
-
+    
 function loadGLBModel(fileName) {
     return new Promise((resolve, reject) => {
         gltfLoader.load(
@@ -154,12 +155,16 @@ function loadOBJModel(fileName) {
 }
 
 export function castShadow(object) {
-    object.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
+    try {
+        object.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        });
+    } catch (error) {
+        console.log('shadow error for:', object);
+    }
 }
 
 export function moveObject(objects, keys) {
@@ -181,16 +186,42 @@ export function moveObject(objects, keys) {
                 obj.object.position.x += moveDistance;
             }
 
-            // Vertical movements
             if (keys.Space) {
                 obj.object.position.y += moveDistance;
             }
             if (keys.Shift) {
                 obj.object.position.y -= moveDistance;
             }
+            if (keys.r) {
+                setToFalse(objects);
+                keys.r = false;
+            }
+            if (keys.n) {
+                resetY(objects);
+                keys.n = false;
+            }
         }
     }
 }
+
+
+function resetY(objects) {
+    for (const key in objects) {
+        if (objects.hasOwnProperty(key)) {
+            if (objects[key].hasOwnProperty('clicked') && objects[key].clicked === true) {
+                if (objects[key].object && objects[key].object.position) {
+                    objects[key].object.position.y = 0;
+                } else {
+                    console.warn(`Position is undefined for object ${key}`);
+                }
+            }
+        }
+    }
+}
+
+
+
+
 
 export async function loadGrass(scene) {
     const gltf = await gltfLoader.loadAsync(
@@ -199,17 +230,20 @@ export async function loadGrass(scene) {
     const grassModel = gltf.scene;
     grassModel.scale.set(0.02, 0.02, 0.02);
     const grassCount = 200;
-    const groundSize = 100;
+    const xLength = 76;
+    const yLength = 96;
     for (let i = 0; i < grassCount; i++) {
-    const clone = grassModel.clone();
-    const x = Math.random() * groundSize - groundSize / 2;
-    const z = Math.random() * groundSize - groundSize / 2;
-    if (Math.abs(x + 23) < 5 && Math.abs(z) < 5) continue;
-    clone.position.set(x, 0.1, z);
-    clone.rotation.y = Math.random() * Math.PI * 2;
-    scene.add(clone);
+        const clone = grassModel.clone();
+        const x = Math.random() * xLength - xLength / 2;
+        const z = Math.random() * yLength - yLength / 2;
+        if (Math.abs(x + 23) < 5 && Math.abs(z) < 5) continue;
+        clone.position.set(x+12, 0.1, z);
+        clone.rotation.y = Math.random() * Math.PI * 2;
+        scene.add(clone);
     }
 }
+
+
 
 async function loadLamps(scene, interactionManager, objects) {
     const lampPost = await loadGLBModel('lampPost.glb');
@@ -226,6 +260,8 @@ async function loadLamps(scene, interactionManager, objects) {
     objects['lampPost'] = { object: lampPost, light: light1, clicked: false };
     addInteraction(lampPost, 'lampPost', objects);
 
+
+
     const lampPost2 = await loadGLBModel('lampPost.glb');
     castShadow(lampPost2);
     lampPost2.position.set(15, 0, 10);
@@ -239,6 +275,38 @@ async function loadLamps(scene, interactionManager, objects) {
     interactionManager.add(lampPost2);
     objects['lampPost2'] = { object: lampPost2, light: light2, clicked: false };
     addInteraction(lampPost2, 'lampPost2', objects);
+
+
+
+    const lampPost3 = await loadGLBModel('lampPost.glb');
+    castShadow(lampPost3);
+    lampPost3.position.set(-30, 0, -20);
+    lampPost3.scale.set(0.006, 0.006, 0.006);
+    scene.add(lampPost3);
+
+    const light3 = addLight(-30, 0, -20);
+    scene.add(light3);
+
+    lampPost3.interactive = true;
+    interactionManager.add(lampPost3);
+    objects['lampPost3'] = { object: lampPost3, light: light3, clicked: false };
+    addInteraction(lampPost3, 'lampPost3', objects);
+
+
+
+    const lampPost4 = await loadGLBModel('lampPost.glb');
+    castShadow(lampPost4);
+    lampPost4.position.set(-30, 0, 20);
+    lampPost4.scale.set(0.006, 0.006, 0.006);
+    scene.add(lampPost4);
+
+    const light5 = addLight(-30, 0, 20);
+    scene.add(light5);
+
+    lampPost4.interactive = true;
+    interactionManager.add(lampPost4);
+    objects['lampPost4'] = { object: lampPost4, light: light5, clicked: false };
+    addInteraction(lampPost4, 'lampPost5', objects);
 }
 
 
@@ -390,21 +458,21 @@ async function loadTrees(scene, interactionManager, objects) {
     objects['tree16'] = { object: tree16, clicked: false };
     addInteraction(tree16, 'tree16', objects);
     
-    let tree17 = createTree(-35, 0, 3, 's', scene, st, mt, bt);
+    let tree17 = createTree(-25, 0, 3, 's', scene, st, mt, bt);
     scene.add(tree17);
     tree17.interactive = true;
     interactionManager.add(tree17);
     objects['tree17'] = { object: tree17, clicked: false };
     addInteraction(tree17, 'tree17', objects);
     
-    let tree18 = createTree(-30, 0, -8, 'm', scene, st, mt, bt);
+    let tree18 = createTree(-26, 0, -8, 'm', scene, st, mt, bt);
     scene.add(tree18);
     tree18.interactive = true;
     interactionManager.add(tree18);
     objects['tree18'] = { object: tree18, clicked: false };
     addInteraction(tree18, 'tree18', objects);
     
-    let tree19 = createTree(-32, 0, 18, 'l', scene, st, mt, bt);
+    let tree19 = createTree(-20, 0, 20, 'l', scene, st, mt, bt);
     scene.add(tree19);
     tree19.interactive = true;
     interactionManager.add(tree19);
@@ -432,3 +500,46 @@ function createTree(x, y, z, size, scene, st, mt, bt) {
     return tree;
 }
 
+async function addRoad(scene, interactionManager, objects) {
+    const road1 = await loadGLBModel('road.glb');
+    castShadow(road1);
+    road1.interactive = true;
+    interactionManager.add(road1);
+    road1.position.set(-37.4, -0.2, 38.7);
+    road1.scale.set(0.015, 0.015, 0.015);
+    scene.add(road1);
+
+
+    const road2 = await loadGLBModel('road.glb');
+    castShadow(road2);
+    road2.interactive = true;
+    interactionManager.add(road2);
+    road2.position.set(-37.4, -0.2, 20);
+    road2.scale.set(0.015, 0.015, 0.015);
+    scene.add(road2);
+
+    const road3 = await loadGLBModel('road.glb');
+    castShadow(road3);
+    road3.interactive = true;
+    interactionManager.add(road3);
+    road3.position.set(-37.4, -0.2, 1);
+    road3.scale.set(0.015, 0.015, 0.015);
+    scene.add(road3);
+
+    const road4 = await loadGLBModel('road.glb');
+    castShadow(road4);
+    road4.interactive = true;
+    interactionManager.add(road4);
+    road4.position.set(-37.4, -0.2, -19);
+    road4.scale.set(0.015, 0.015, 0.015);
+    scene.add(road4);
+
+    const road5 = await loadGLBModel('road.glb');
+    castShadow(road5);
+    road5.interactive = true;
+    interactionManager.add(road5);
+    road5.position.set(-37.4, -0.2, -38.7);
+    road5.scale.set(0.015, 0.015, 0.015);
+    scene.add(road5);
+
+}

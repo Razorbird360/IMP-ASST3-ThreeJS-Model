@@ -8,7 +8,6 @@ import { InteractionManager } from 'three.interactive';
 import { updateLights, createLights } from './lights.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x808080);
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#canvas'),
@@ -46,13 +45,14 @@ gradient.addColorStop(0.3, "#228B22");
 ctx.fillStyle = gradient;
 ctx.fillRect(0, 0, groundTexture.width, groundTexture.height);
 const texture = new THREE.CanvasTexture(groundTexture);
-const planeGeometry = new THREE.PlaneGeometry(100, 100);
+const planeGeometry = new THREE.PlaneGeometry(80, 100);
 const planeMaterial = new THREE.MeshStandardMaterial({
   map: texture,
   side: THREE.DoubleSide,
 });
 const ground = new THREE.Mesh(planeGeometry, planeMaterial);
 ground.receiveShadow = true;
+ground.position.set(10, 0, 0);
 scene.add(ground);
 
 // Rotate ground to be flat
@@ -72,7 +72,9 @@ const keys = {
   Right: false,
   Shift: false,
   Space: false,
-  l: 1
+  l: 1,
+  r: false,
+  n: false,
 };
 
 window.addEventListener('keydown', (event) => {
@@ -80,7 +82,7 @@ window.addEventListener('keydown', (event) => {
 });
 
 window.addEventListener('keyup', (event) => {
-  if (event.key.toLowerCase() === 'l') {
+  if (event.key.toLowerCase() === 'l' || event.key.toLowerCase() === 'r' || event.key.toLowerCase() === 'n') {
     return;
   }
   updateKeys(event, false);
@@ -120,7 +122,7 @@ function updateKeys(event, isPressed) {
     toggleKey('d');
   } else if (event.key.toLowerCase() === ' ') {
     toggleKey('Space');
-  } else if (event.key.toLowerCase() === 'Shift') {
+  } else if (event.key === 'Shift') {
     toggleKey('Shift');
   } else if (event.key.toLowerCase() === 'l') {
     if (keys.l === 1) {
@@ -138,6 +140,10 @@ function updateKeys(event, isPressed) {
     } else if (keys.l === 7) {
       keys.l = 1;
     }
+  } else if (event.key.toLowerCase() === 'r') {
+    keys.r = !keys.r;
+  } else if (event.key.toLowerCase() === 'n') {
+    keys.n = !keys.n;
   }
 }
 
@@ -161,9 +167,9 @@ async function init() {
     moveObject(objects, keys);
     updateLightPosition(objects);
     
-    console.log(keys.l);
-
     updateLights(scene, lights, keys);
+    // console.log(objects);
+    console.log(keys.n);
   }
   animate();
 }
