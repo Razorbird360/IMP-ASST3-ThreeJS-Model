@@ -169,7 +169,7 @@ async function init() {
     
     updateLights(scene, lights, keys);
     // console.log(objects);
-    console.log(keys.n);
+    // console.log(keys.n);
   }
   animate();
 }

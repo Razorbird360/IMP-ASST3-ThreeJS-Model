@@ -221,6 +221,16 @@ function resetY(objects) {
 
 
 
+function setToFalse(objects) {
+    for (const key in objects) {
+        if (objects.hasOwnProperty(key)) {
+            if (objects[key].hasOwnProperty('clicked') && objects[key].clicked === true) {
+                objects[key].clicked = false;
+            }
+        }
+    }
+}
+
 
 
 export async function loadGrass(scene) {
@@ -367,7 +377,7 @@ async function loadTrees(scene, interactionManager, objects) {
     objects['tree3'] = { object: tree3, clicked: false };
     addInteraction(tree3, 'tree3', objects);
     
-    let tree4 = createTree(6, 0, -10, 's', scene, st, mt, bt);
+    let tree4 = createTree(3, 0, -10, 's', scene, st, mt, bt);
     scene.add(tree4);
     tree4.interactive = true;
     interactionManager.add(tree4);
@@ -543,3 +553,5 @@ async function addRoad(scene, interactionManager, objects) {
     scene.add(road5);
 
 }
+
+
