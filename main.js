@@ -21,7 +21,7 @@ camera.position.set(0, 6, 7);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 const axesHelper = new THREE.AxesHelper(7);
-scene.add(axesHelper);
+// scene.add(axesHelper);
 
 window.addEventListener('resize', () => resize(renderer, camera));
 

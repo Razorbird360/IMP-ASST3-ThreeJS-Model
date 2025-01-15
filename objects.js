@@ -88,7 +88,7 @@ export async function loadObjects(scene, objects, interactionManager) {
 
     const picnicTable = await loadGLBModel('picnicTable.glb');
     castShadow(picnicTable);
-    picnicTable.position.set(-10, 0, 0);
+    picnicTable.position.set(-12, 0, 3);
     picnicTable.scale.set(1.1, 1.1, 1.1);
     scene.add(picnicTable);
     picnicTable.interactive = true;
@@ -100,6 +100,8 @@ export async function loadObjects(scene, objects, interactionManager) {
     loadLamps(scene, interactionManager, objects);
 
     addRoad(scene, interactionManager, objects);
+
+    addPath(scene, interactionManager, objects);
 
     return objects;
 }
@@ -369,7 +371,7 @@ async function loadTrees(scene, interactionManager, objects) {
     objects['tree1'] = { object: tree1, clicked: false };
     addInteraction(tree1, 'tree1', objects);
     
-    let tree2 = createTree(-7, 0, -7, 'm', scene, st, mt, bt);
+    let tree2 = createTree(-7, 0, -10, 'm', scene, st, mt, bt);
     scene.add(tree2);
     tree2.interactive = true;
     interactionManager.add(tree2);
@@ -453,7 +455,7 @@ async function loadTrees(scene, interactionManager, objects) {
     objects['tree13'] = { object: tree13, clicked: false };
     addInteraction(tree13, 'tree13', objects);
     
-    let tree14 = createTree(-22, 0, 10, 's', scene, st, mt, bt);
+    let tree14 = createTree(-22, 0, 12, 's', scene, st, mt, bt);
     scene.add(tree14);
     tree14.interactive = true;
     interactionManager.add(tree14);
@@ -561,3 +563,152 @@ async function addRoad(scene, interactionManager, objects) {
 }
 
 
+function createPath(x, y, z, type, scene, sp, s3, s2, s7b, s7s, interactionManager) {
+    let path = null;
+    switch (type) {
+        case 'sp':
+            path = sp.scene.clone();
+            break;
+        case 's3':
+            path = s3.scene.clone();
+            break;
+        case 's2':
+            path = s2.scene.clone();
+            break;
+        case 's7b':
+            path = s7b.scene.clone();
+            break;
+        case 's7s':
+            path = s7s.scene.clone();
+            break;
+    }
+    path.scale.set(1, 1, 1);
+    path.position.set(x, y, z);
+    castShadow(path);
+    path.interactive = true;
+    interactionManager.add(path);
+    return path;
+}
+
+async function addPath(scene, interactionManager, objects) {
+    const sp = await gltfLoader.loadAsync(
+        `${BASE_PATH}models/pathway/stonePath.glb`
+    );
+    const s3 = await gltfLoader.loadAsync(
+        `${BASE_PATH}models/pathway/stone3.glb`
+    );
+    const s2 = await gltfLoader.loadAsync(
+        `${BASE_PATH}models/pathway/stone2.glb`
+    );
+    const s7b = await gltfLoader.loadAsync(
+        `${BASE_PATH}models/pathway/stone7big.glb`
+    );
+    const s7s = await gltfLoader.loadAsync(
+        `${BASE_PATH}models/pathway/stone7small.glb`
+    );
+
+    let path1 = createPath(-25, 0, 7.5, 'sp', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    path1.rotation.y = Math.PI / 2;
+    scene.add(path1);
+    objects['path1'] = { object: path1, clicked: false };
+    addInteraction(path1, 'path1', objects);
+
+    let path2 = createPath(-16.5, 0, 7.5, 'sp', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    path2.rotation.y = Math.PI / 2;
+    scene.add(path2);
+    objects['path2'] = { object: path2, clicked: false };
+    addInteraction(path2, 'path2', objects);
+
+    let path3 = createPath(-8, 0, 7.5, 'sp', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    path3.rotation.y = Math.PI / 2;
+    scene.add(path3);
+    objects['path3'] = { object: path3, clicked: false };
+    addInteraction(path3, 'path3', objects);
+
+    let path4 = createPath(-8, 0, 2.5, 'sp', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path4);
+    objects['path4'] = { object: path4, clicked: false };
+    addInteraction(path4, 'path4', objects);
+
+    let path5 = createPath(-8, 0, -2.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path5);
+    objects['path5'] = { object: path5, clicked: false };
+    addInteraction(path5, 'path5', objects);
+
+    let path6 = createPath(-8, 0, -4, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path6);
+    objects['path6'] = { object: path6, clicked: false };
+    addInteraction(path6, 'path6', objects);
+
+    let path7 = createPath(-8, 0, -5.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path7);
+    objects['path7'] = { object: path7, clicked: false };
+    addInteraction(path7, 'path7', objects);
+
+    let path8 = createPath(-8, 0, -7, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path8);
+    objects['path8'] = { object: path8, clicked: false };
+    addInteraction(path8, 'path8', objects);
+
+    let path9 = createPath(-3, 0, -7, 'sp', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    path9.rotation.y = Math.PI / 2;
+    scene.add(path9);
+    objects['path9'] = { object: path9, clicked: false };
+    addInteraction(path9, 'path9', objects);
+
+    let path10 = createPath(2, 0, -7, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path10);
+    objects['path10'] = { object: path10, clicked: false };
+    addInteraction(path10, 'path10', objects);
+
+    let path11 = createPath(3.5, 0, -7, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path11);
+    objects['path11'] = { object: path11, clicked: false };
+    addInteraction(path11, 'path11', objects);
+
+    let path12 = createPath(5, 0, -7, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path12);
+    objects['path12'] = { object: path12, clicked: false };
+    addInteraction(path12, 'path12', objects);
+
+    let path13 = createPath(6.5, 0, -3.5, 'sp', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path13);
+    objects['path13'] = { object: path13, clicked: false };
+    addInteraction(path13, 'path13', objects);
+
+    let path14 = createPath(6.5, 0, 4, 'sp', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path14);
+    objects['path14'] = { object: path14, clicked: false };
+    addInteraction(path14, 'path14', objects);
+
+    let path15 = createPath(4.75, 0, 7.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path15);
+    objects['path15'] = { object: path15, clicked: false };
+    addInteraction(path15, 'path15', objects);
+
+    let path16 = createPath(3.2, 0, 7.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path16);
+    objects['path16'] = { object: path16, clicked: false };
+    addInteraction(path16, 'path16', objects);
+
+    let path17 = createPath(1.7, 0, 7.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path17);
+    objects['path17'] = { object: path17, clicked: false };
+    addInteraction(path17, 'path17', objects);
+
+    let path18 = createPath(0.1, 0, 7.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path18);
+    objects['path18'] = { object: path18, clicked: false };
+    addInteraction(path18, 'path18', objects);
+
+    let path19 = createPath(-1.3, 0, 7.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path19);
+    objects['path19'] = { object: path19, clicked: false };
+    addInteraction(path19, 'path19', objects);
+
+    let path20 = createPath(-2.9, 0, 7.5, 's7b', scene, sp, s3, s2, s7b, s7s, interactionManager);
+    scene.add(path20);
+    objects['path20'] = { object: path20, clicked: false };
+    addInteraction(path20, 'path20', objects);
+
+}
