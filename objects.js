@@ -46,7 +46,7 @@ export async function loadObjects(scene, objects, interactionManager) {
 
     const slide = await loadGLBModel('playground/slide.glb');
     castShadow(slide);
-    slide.position.set(10, 0, 0);
+    slide.position.set(10, 0, 4);
     scene.add(slide);
     slide.interactive = true;
     interactionManager.add(slide);
@@ -55,7 +55,7 @@ export async function loadObjects(scene, objects, interactionManager) {
     
     const monkeyBars = await loadGLBModel('playground/monkeyBars.glb');
     castShadow(monkeyBars);
-    monkeyBars.position.set(15, 0, 0);
+    monkeyBars.position.set(15, 0, 4);
     monkeyBars.rotation.y = Math.PI / 2;
     monkeyBars.scale.set(2, 2, 2);
     scene.add(monkeyBars);
@@ -66,7 +66,7 @@ export async function loadObjects(scene, objects, interactionManager) {
 
     const sandbox = await loadGLBModel('playground/sandbox.glb');
     castShadow(sandbox);
-    sandbox.position.set(10, 0, -10);
+    sandbox.position.set(11, 0, -6);
     sandbox.scale.set(2.5, 2.5, 2.5);
     scene.add(sandbox);
     sandbox.interactive = true;
@@ -76,7 +76,7 @@ export async function loadObjects(scene, objects, interactionManager) {
     
     const seesaw = await loadGLBModel('playground/seesaw.glb');
     castShadow(seesaw);
-    seesaw.position.set(15, 0, -10);
+    seesaw.position.set(16, 0, -6);
     seesaw.rotation.y = Math.PI / 2;
     seesaw.scale.set(0.7, 0.7, 0.7);
     scene.add(seesaw);
@@ -95,6 +95,17 @@ export async function loadObjects(scene, objects, interactionManager) {
     interactionManager.add(picnicTable);
     objects['picnicTable'] = { object: picnicTable, clicked: false };
     addInteraction(picnicTable, 'picnicTable', objects);
+
+
+    const umbrellaTable = await loadGLBModel('beach_table.glb');
+    castShadow(umbrellaTable);
+    umbrellaTable.position.set(-12, 0, -4);
+    umbrellaTable.scale.set(0.27, 0.27, 0.27);
+    scene.add(umbrellaTable);
+    umbrellaTable.interactive = true;
+    interactionManager.add(umbrellaTable);
+    objects['umbrellaTable'] = { object: umbrellaTable, clicked: false };
+    addInteraction(umbrellaTable, 'umbrellaTable', objects);
 
 
     loadLamps(scene, interactionManager, objects);
@@ -372,7 +383,7 @@ async function loadTrees(scene, interactionManager, objects) {
     addInteraction(tree1, 'tree1', objects);
     
     let tree2 = createTree(-7, 0, -10, 'm', scene, st, mt, bt);
-    scene.add(tree2);
+    // scene.add(tree2);
     tree2.interactive = true;
     interactionManager.add(tree2);
     objects['tree2'] = { object: tree2, clicked: false };
@@ -392,7 +403,7 @@ async function loadTrees(scene, interactionManager, objects) {
     objects['tree4'] = { object: tree4, clicked: false };
     addInteraction(tree4, 'tree4', objects);
     
-    let tree5 = createTree(9, 0, 10, 'l', scene, st, mt, bt);
+    let tree5 = createTree(12, 0, 10, 'l', scene, st, mt, bt);
     scene.add(tree5);
     tree5.interactive = true;
     interactionManager.add(tree5);
@@ -400,7 +411,7 @@ async function loadTrees(scene, interactionManager, objects) {
     addInteraction(tree5, 'tree5', objects);
     
     let tree6 = createTree(-12, 0, 17, 'm', scene, st, mt, bt);
-    scene.add(tree6);
+    // scene.add(tree6);
     tree6.interactive = true;
     interactionManager.add(tree6);
     objects['tree6'] = { object: tree6, clicked: false };
@@ -421,7 +432,7 @@ async function loadTrees(scene, interactionManager, objects) {
     addInteraction(tree8, 'tree8', objects);
     
     let tree9 = createTree(14, 0, 22, 'm', scene, st, mt, bt);
-    scene.add(tree9);
+    // scene.add(tree9);
     tree9.interactive = true;
     interactionManager.add(tree9);
     objects['tree9'] = { object: tree9, clicked: false };
@@ -442,7 +453,7 @@ async function loadTrees(scene, interactionManager, objects) {
     addInteraction(tree11, 'tree11', objects);
     
     let tree12 = createTree(27, 0, 7, 'm', scene, st, mt, bt);
-    scene.add(tree12);
+    // scene.add(tree12);
     tree12.interactive = true;
     interactionManager.add(tree12);
     objects['tree12'] = { object: tree12, clicked: false };
@@ -463,7 +474,7 @@ async function loadTrees(scene, interactionManager, objects) {
     addInteraction(tree14, 'tree14', objects);
     
     let tree15 = createTree(1, 0, -20, 'm', scene, st, mt, bt);
-    scene.add(tree15);
+    // scene.add(tree15);
     tree15.interactive = true;
     interactionManager.add(tree15);
     objects['tree15'] = { object: tree15, clicked: false };
@@ -484,7 +495,7 @@ async function loadTrees(scene, interactionManager, objects) {
     addInteraction(tree17, 'tree17', objects);
     
     let tree18 = createTree(-26, 0, -8, 'm', scene, st, mt, bt);
-    scene.add(tree18);
+    // scene.add(tree18);
     tree18.interactive = true;
     interactionManager.add(tree18);
     objects['tree18'] = { object: tree18, clicked: false };
