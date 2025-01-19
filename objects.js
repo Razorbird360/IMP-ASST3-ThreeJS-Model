@@ -329,13 +329,13 @@ async function loadLamps(scene, interactionManager, objects) {
     lampPost4.scale.set(0.006, 0.006, 0.006);
     scene.add(lampPost4);
 
-    const light5 = addLight(-30, 0, 20);
-    scene.add(light5);
+    const light4 = addLight(-30, 0, 20);
+    scene.add(light4);
 
     lampPost4.interactive = true;
     interactionManager.add(lampPost4);
-    objects['lampPost4'] = { object: lampPost4, light: light5, clicked: false };
-    addInteraction(lampPost4, 'lampPost5', objects);
+    objects['lampPost4'] = { object: lampPost4, light: light4, clicked: false };
+    addInteraction(lampPost4, 'lampPost4', objects);
 }
 
 
